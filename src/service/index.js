@@ -1,3 +1,12 @@
-import SwapiService from "./swapi-service";
+import PersonService from "./person.service";
+import PlanetService from "./palanet.service";
+import StarshipsService from "./starship.service";
 
-export default SwapiService;
+const api = {
+  persons: new PersonService(),
+  planets: new PlanetService(),
+  starships: new StarshipsService()
+};
+
+console.log("API");
+export default api;
