@@ -1,3 +1,3 @@
-import SwapiService from "./swapi-service";
+import api from "./http";
 
-export default SwapiService;
+export default api;

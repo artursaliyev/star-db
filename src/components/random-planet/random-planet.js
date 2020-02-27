@@ -2,11 +2,9 @@ import React, { Component } from "react";
 
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
-import SwapiService from "../../service/index";
+import api from "../../service";
 
 import "./random-planet.css";
-
-const api = new SwapiService();
 
 export default class RandomPlanet extends Component {
   state = {
@@ -38,10 +36,7 @@ export default class RandomPlanet extends Component {
 
   updatePlanet = () => {
     const id = Math.floor(Math.random() * 10) + 2;
-    api
-      .getPlanet(id)
-      .then(this.onPlanetLoaded)
-      .catch(this.onError);
+    api.planets.get(id).then(this.onPlanetLoaded);
   };
 
   render() {

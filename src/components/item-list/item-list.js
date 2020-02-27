@@ -1,21 +1,17 @@
 import React, { Component } from "react";
 
-import SwapiService from "../../service";
-
 import "./item-list.css";
 import Spinner from "../spinner";
-import ErrorButton from "../error-button";
+import api from "../../service";
 
 export default class ItemList extends Component {
-  swapiService = new SwapiService();
-
   state = {
     peopleList: [],
     loading: true
   };
 
   componentDidMount() {
-    this.swapiService.getAllPeople().then(peopleList => {
+    api.persons.all().then(peopleList => {
       this.setState({
         peopleList,
         loading: false

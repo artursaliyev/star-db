@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 
 import "./person-details.css";
-import SwapiService from "../../service";
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
 import ErrorButton from "../error-button";
+import api from "../../service";
 
 export default class PersonDetails extends Component {
-  swapiServisce = new SwapiService();
-
   state = {
     person: null,
     loading: true,
@@ -33,24 +31,22 @@ export default class PersonDetails extends Component {
     });
   };
 
-  updatePerson() {
+  updatePerson = () => {
     const { personId } = this.props;
 
     if (!personId) {
       return;
     }
     this.setState({ loading: true, person: {} });
-    this.swapiServisce
-      .getPerson(personId)
+    api.persons
+      .get(personId)
       .then(person => {
         this.setState({ person, loading: false });
       })
       .catch(this.onError);
-  }
+  };
 
   render() {
-    console.log("PersonDetails");
-
     if (!this.state.person) {
       return <span>Select a person from a list</span>;
     }
