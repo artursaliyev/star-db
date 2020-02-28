@@ -1,60 +1,41 @@
 import React, { Component } from "react";
 import ItemList from "../item-list";
-import PersonDetails from "../person-details";
-import ErrorIndicator from "../error-indicator";
+import ItemDetails from "../item-details";
+import Row from "../row";
+import ErrorBoundry from "../error-boundry";
 import api from "../../service";
-
-const Row = ({ left, right }) => {
-  return (
-    <div className="row mb2">
-      <div className="col-md-6">{left}</div>
-      <div className="col-md-6">{right}</div>
-    </div>
-  );
-};
 
 export default class PeoplePage extends Component {
   state = {
-    selectedPerson: null,
-    error: false
+    selectedItem: null
   };
 
-  componentDidCatch(error, info) {
+  onItemSelected = id => {
     this.setState({
-      error: true
-    });
-  }
-
-  onPersonSelected = id => {
-    this.setState({
-      selectedPerson: id
+      selectedItem: id
     });
   };
 
   render() {
-    if (this.state.error) {
-      return <ErrorIndicator />;
-    }
-
     const itemList = (
       <ItemList
-        propsOnItemSelected={this.onPersonSelected}
+        propsOnItemSelected={this.onItemSelected}
         getData={api.persons.all}
-        renderItem={({ name, gender, birthYear }) =>
-          `${name} (${gender}, ${birthYear})`
-        }
-      />
+      >
+        {i => `${i.name} (${i.birthYear})`}
+      </ItemList>
     );
 
-    const personDetails = (
-      <PersonDetails personId={this.state.selectedPerson} />
+    const itemDetails = (
+      <ErrorBoundry>
+        <ItemDetails itemId={this.state.selectedItem} />
+      </ErrorBoundry>
     );
 
     return (
-      <div>
-        <Row left={itemList} right={personDetails} />
-        <Row left="Foo" right="Bar" />
-      </div>
+      <ErrorBoundry>
+        <Row left={itemList} right={itemDetails} />;
+      </ErrorBoundry>
     );
   }
 }

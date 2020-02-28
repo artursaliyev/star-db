@@ -3,49 +3,28 @@ import React, { Component } from "react";
 import "./item-list.css";
 import Spinner from "../spinner";
 import api from "../../service";
+import { withData } from "../hoc-helpers";
 
-export default class ItemList extends Component {
-  state = {
-    itemList: [],
-    loading: true
-  };
+const ItemList = props => {
+  const { data, propsOnItemSelected, children: renderLabel } = props;
 
-  componentDidMount() {
-    const { getData } = this.props;
-
-    getData().then(itemList => {
-      this.setState({
-        itemList,
-        loading: false
-      });
-    });
-  }
-
-  renderItems(arr) {
-    const label = this.props.renderItem;
-
+  const renderItems = arr => {
     return arr.map(({ id, ...item }) => {
       return (
         <li
           className="list-group-item"
           key={id}
-          onClick={() => this.props.propsOnItemSelected(id)}
+          onClick={() => propsOnItemSelected(id)}
         >
-          {label(item)}
+          {renderLabel(item)}
         </li>
       );
     });
-  }
+  };
 
-  render() {
-    const { itemList, loading } = this.state;
+  const items = renderItems(data);
 
-    if (loading) {
-      return <Spinner />;
-    }
+  return <ul className="item-list list-group">{items}</ul>;
+};
 
-    const items = this.renderItems(itemList);
-
-    return <ul className="item-list list-group">{items}</ul>;
-  }
-}
+export default withData(ItemList, api.persons.all);

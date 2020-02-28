@@ -6,8 +6,10 @@ import ErrorButton from "../error-button/index";
 import ErrorIndicator from "../error-indicator/index";
 import PeoplePage from "../people-page";
 import ItemList from "../item-list";
-import PersonDetails from "../person-details";
+import ItemDetails from "../item-details";
 import api from "../../service";
+import Row from "../row";
+import { Record } from "../item-details/item-details";
 
 class App extends Component {
   state = {
@@ -34,10 +36,38 @@ class App extends Component {
     }
 
     const planet = this.state.showRandomPlanet ? <RandomPlanet /> : null;
+
+    const personDetails = (
+      <ItemDetails
+        itemId={11}
+        getData={api.persons.get}
+        getImageUrl={api.persons.imageUrl}
+      >
+        <Record field="gender" label="Gender" />
+        <Record field="eyeColor" label="Eye color" />
+      </ItemDetails>
+    );
+    const starshipDetails = (
+      <ItemDetails
+        itemId={5}
+        getData={api.starships.get}
+        getImageUrl={api.starships.imageUrl}
+      >
+        <Record field="model" label="Model" />
+        <Record field="length" label="Length" />
+        <Record field="costInCredits" label="Cost" />
+      </ItemDetails>
+    );
+
     return (
       <div className="star-db-app pr-5 pl-5">
         <Header />
-        {planet}
+
+        <ItemList propsOnItemSelected={() => {}} getData={api.persons.all}>
+          {i => `${i.name} (${i.birthYear})`}
+        </ItemList>
+        {/* <Row left={personDetails} right={starshipDetails} /> */}
+        {/* {planet}
 
         <div className="row mb2 button-row">
           <button
@@ -49,33 +79,7 @@ class App extends Component {
 
           <ErrorButton />
         </div>
-        <PeoplePage />
-
-        <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList
-              propsOnItemSelected={this.onPersonSelected}
-              getData={api.planets.all}
-              renderItem={item => item.name}
-            />
-          </div>
-          <div className="col-md-6">
-            <PersonDetails personId={this.selectedPerson} />
-          </div>
-        </div>
-
-        <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList
-              propsOnItemSelected={this.onPersonSelected}
-              getData={api.starships.all}
-              renderItem={item => item.name}
-            />
-          </div>
-          <div className="col-md-6">
-            <PersonDetails personId={this.selectedPerson} />
-          </div>
-        </div>
+        <PeoplePage /> */}
       </div>
     );
   }

@@ -6,10 +6,14 @@ export default class PlanetService extends BaseHttpService {
     return data.results.map(this._transformPlanet);
   };
 
-  async get(id) {
+  get = async id => {
     const planet = await this.getResource(`/planets/${id}/`);
     return this._transformPlanet(planet);
-  }
+  };
+
+  imageUrl = ({ id }) => {
+    return `${this._imageBase}/planets/${id}.jpg`;
+  };
 
   _transformPlanet = planet => {
     return {

@@ -6,10 +6,14 @@ export default class PersonService extends BaseHttpService {
     return data.results.map(this._transformPerson);
   };
 
-  async get(id) {
+  get = async id => {
     const person = await this.getResource(`/people/${id}/`);
     return this._transformPerson(person);
-  }
+  };
+
+  imageUrl = ({ id }) => {
+    return `${this._imageBase}/characters/${id}.jpg`;
+  };
 
   _transformPerson = person => {
     return {
@@ -17,7 +21,7 @@ export default class PersonService extends BaseHttpService {
       name: person.name,
       gender: person.gender,
       birthYear: person.birth_year,
-      eyeColor: person.eyeColor
+      eyeColor: person.eye_color
     };
   };
 }
