@@ -5,6 +5,10 @@ import RandomPlanet from "../random-planet";
 import ErrorButton from "../error-button/index";
 import ErrorIndicator from "../error-indicator/index";
 import PeoplePage from "../people-page";
+import ItemLIst from "../item-list";
+import ItemDetails from "../item-details";
+import api from "../../service";
+import Row from "../row";
 
 class App extends Component {
   state = {
@@ -31,10 +35,17 @@ class App extends Component {
     }
 
     const planet = this.state.showRandomPlanet ? <RandomPlanet /> : null;
+
+    const personDetails = <ItemDetails itemId={11} getData={api.persons.get} />;
+    const starshipDetails = (
+      <ItemDetails itemId={2} getData={api.starships.get} />
+    );
+
     return (
       <div className="star-db-app pr-5 pl-5">
         <Header />
-        {planet}
+        <Row left={personDetails} right={starshipDetails} />
+        {/* {planet}
 
         <div className="row mb2 button-row">
           <button
@@ -46,9 +57,7 @@ class App extends Component {
 
           <ErrorButton />
         </div>
-        <PeoplePage />
-        <PeoplePage />
-        <PeoplePage />
+        <PeoplePage /> */}
       </div>
     );
   }

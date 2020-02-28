@@ -1,17 +1,17 @@
 import BaseHttpService from "./baseHttpService";
 
 export default class PlanetService extends BaseHttpService {
-  async all() {
+  all = async () => {
     const data = await this.getResource(`/planets/`);
     return data.results.map(this._transformPlanet);
-  }
+  };
 
-  async get(id) {
+  get = async id => {
     const planet = await this.getResource(`/planets/${id}/`);
     return this._transformPlanet(planet);
-  }
+  };
 
-  _transformPlanet(planet) {
+  _transformPlanet = planet => {
     return {
       id: this._extractId(planet),
       name: planet.name,
@@ -19,5 +19,5 @@ export default class PlanetService extends BaseHttpService {
       rotationPeriod: planet.rotation_period,
       diameter: planet.diameter
     };
-  }
+  };
 }

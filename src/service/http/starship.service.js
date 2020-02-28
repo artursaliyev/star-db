@@ -1,15 +1,15 @@
 import BaseHttpService from "./baseHttpService";
 
-export default class StarshipsService extends BaseHttpService {
-  async getAllStarships() {
+export default class StarshipService extends BaseHttpService {
+  all = async () => {
     const data = await this.getResource(`/starships/`);
     return data.results.map(this._transformStarship);
-  }
+  };
 
-  async getStarship(id) {
-    const starship = this.getResource(`/starship /${id}/`);
+  get = async id => {
+    const starship = await this.getResource(`/starships/${id}/`);
     return this._transformStarship(starship);
-  }
+  };
 
   _transformStarship = starship => {
     return {
@@ -17,11 +17,11 @@ export default class StarshipsService extends BaseHttpService {
       name: starship.name,
       model: starship.model,
       manufacturer: starship.manufacturer,
-      costInCredits: starship.costInCredits,
+      costInCredits: starship.cost_in_credits,
       lenght: starship.lenght,
       crew: starship.crew,
       passengers: starship.passengers,
-      cargoCapacity: starship.cargoCapacity
+      cargoCapacity: starship.cargo_capacity
     };
   };
 }

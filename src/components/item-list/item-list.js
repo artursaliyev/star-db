@@ -2,45 +2,47 @@ import React, { Component } from "react";
 
 import "./item-list.css";
 import Spinner from "../spinner";
-import api from "../../service";
 
 export default class ItemList extends Component {
   state = {
-    peopleList: [],
+    itemList: [],
     loading: true
   };
 
   componentDidMount() {
-    api.persons.all().then(peopleList => {
+    const { getData } = this.props;
+    getData().then(itemList => {
       this.setState({
-        peopleList,
+        itemList,
         loading: false
       });
     });
   }
 
   renderItems(arr) {
-    return arr.map(({ id, name }) => {
+    const renderItem = this.props.children;
+
+    return arr.map(({ id, ...item }) => {
       return (
         <li
           className="list-group-item"
           key={id}
           onClick={() => this.props.propsOnItemSelected(id)}
         >
-          {name}
+          {renderItem(item)}
         </li>
       );
     });
   }
 
   render() {
-    const { peopleList, loading } = this.state;
+    const { itemList, loading } = this.state;
 
     if (loading) {
       return <Spinner />;
     }
 
-    const items = this.renderItems(peopleList);
+    const items = this.renderItems(itemList);
 
     return <ul className="item-list list-group">{items}</ul>;
   }

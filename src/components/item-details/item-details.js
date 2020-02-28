@@ -1,26 +1,24 @@
 import React, { Component } from "react";
 
-import "./person-details.css";
+import "./item-details.css";
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
 import ErrorButton from "../error-button";
-import api from "../../service";
 
-export default class PersonDetails extends Component {
+export default class ItemDetails extends Component {
   state = {
-    person: null,
+    item: null,
     loading: true,
     error: false
   };
 
   componentDidMount() {
-    this.updatePerson();
+    this.updateItem();
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.personId !== this.props.personId) {
-      console.log("componentDidUpdate");
-      this.updatePerson();
+    if (prevProps.itemId !== this.props.itemId) {
+      this.updateItem();
     }
   }
 
@@ -31,24 +29,24 @@ export default class PersonDetails extends Component {
     });
   };
 
-  updatePerson = () => {
-    const { personId } = this.props;
+  updateItem = () => {
+    const { itemId, getData } = this.props;
 
-    if (!personId) {
+    if (!itemId) {
       return;
     }
-    this.setState({ loading: true, person: {} });
-    api.persons
-      .get(personId)
-      .then(person => {
-        this.setState({ person, loading: false });
+
+    this.setState({ loading: true, item: {} });
+    getData(itemId)
+      .then(item => {
+        this.setState({ item, loading: false });
       })
       .catch(this.onError);
   };
 
   render() {
-    if (!this.state.person) {
-      return <span>Select a person from a list</span>;
+    if (!this.state.item) {
+      return <span>Select a item from a list</span>;
     }
 
     const { loading, error } = this.state;
@@ -56,10 +54,10 @@ export default class PersonDetails extends Component {
     const spinner = loading ? <Spinner /> : null;
     const errorMessage = error ? <ErrorIndicator /> : null;
     const hasData = !(error || loading);
-    const content = hasData ? <Content data={this.state.person} /> : null;
+    const content = hasData ? <Content data={this.state.item} /> : null;
 
     return (
-      <div className="person-details card">
+      <div className="item-details card">
         {errorMessage}
         {spinner}
         {content}
@@ -69,31 +67,30 @@ export default class PersonDetails extends Component {
 }
 
 const Content = ({ data }) => {
-  const { id, name, gender, birthYear, eyeColor } = data;
+  const { id, name } = data;
   return (
     <>
       <img
-        className="person-image"
+        className="item-image"
         src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`}
-        alt="person"
+        alt="item"
       />
       <div className="card-body">
         <h4>{name}</h4>
         <ul className="list-group list-group-flush">
           <li className="list-group-item">
             <span className="term">Gender</span>
-            <span>{gender}</span>
+            {/* <span>{gender}</span> */}
           </li>
           <li className="list-group-item">
             <span className="term">Birth Year</span>
-            <span>{birthYear}</span>
+            {/* <span>{birthYear}</span> */}
           </li>
           <li className="list-group-item">
             <span className="term">Eye Color</span>
-            <span>{eyeColor}</span>
+            {/* <span>{eyeColor}</span> */}
           </li>
         </ul>
-        <ErrorButton />
       </div>
     </>
   );
