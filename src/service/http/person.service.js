@@ -1,10 +1,10 @@
 import BaseHttpService from "./baseHttpService";
 
 export default class PersonService extends BaseHttpService {
-  async all() {
+  all = async () => {
     const data = await this.getResource(`/people/`);
     return data.results.map(this._transformPerson);
-  }
+  };
 
   async get(id) {
     const person = await this.getResource(`/people/${id}/`);
@@ -16,7 +16,7 @@ export default class PersonService extends BaseHttpService {
       id: this._extractId(person),
       name: person.name,
       gender: person.gender,
-      birthYear: person.birthYear,
+      birthYear: person.birth_year,
       eyeColor: person.eyeColor
     };
   };

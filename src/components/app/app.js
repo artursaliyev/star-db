@@ -5,6 +5,9 @@ import RandomPlanet from "../random-planet";
 import ErrorButton from "../error-button/index";
 import ErrorIndicator from "../error-indicator/index";
 import PeoplePage from "../people-page";
+import ItemList from "../item-list";
+import PersonDetails from "../person-details";
+import api from "../../service";
 
 class App extends Component {
   state = {
@@ -47,8 +50,32 @@ class App extends Component {
           <ErrorButton />
         </div>
         <PeoplePage />
-        <PeoplePage />
-        <PeoplePage />
+
+        <div className="row mb2">
+          <div className="col-md-6">
+            <ItemList
+              propsOnItemSelected={this.onPersonSelected}
+              getData={api.planets.all}
+              renderItem={item => item.name}
+            />
+          </div>
+          <div className="col-md-6">
+            <PersonDetails personId={this.selectedPerson} />
+          </div>
+        </div>
+
+        <div className="row mb2">
+          <div className="col-md-6">
+            <ItemList
+              propsOnItemSelected={this.onPersonSelected}
+              getData={api.starships.all}
+              renderItem={item => item.name}
+            />
+          </div>
+          <div className="col-md-6">
+            <PersonDetails personId={this.selectedPerson} />
+          </div>
+        </div>
       </div>
     );
   }

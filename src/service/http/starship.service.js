@@ -1,15 +1,15 @@
 import BaseHttpService from "./baseHttpService";
 
 export default class StarshipsService extends BaseHttpService {
-  async getAllStarships() {
+  all = async () => {
     const data = await this.getResource(`/starships/`);
     return data.results.map(this._transformStarship);
-  }
+  };
 
-  async getStarship(id) {
+  get = async id => {
     const starship = this.getResource(`/starship /${id}/`);
     return this._transformStarship(starship);
-  }
+  };
 
   _transformStarship = starship => {
     return {
