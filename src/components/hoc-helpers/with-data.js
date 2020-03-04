@@ -1,20 +1,41 @@
 import React, { Component } from "react";
 import Spinner from "../spinner";
 
-const withData = (View, getData) => {
+const withData = View => {
   return class extends Component {
     state = {
       data: [],
-      loading: true
+      loading: true,
+      error: false
     };
 
-    componentDidMount() {
-      getData().then(data => {
-        this.setState({
-          data,
-          loading: false
-        });
+    onError = e => {
+      this.setState({
+        error: true,
+        loading: false
       });
+    };
+
+    componentDidUpdate(prevProps) {
+      if (prevProps.getData !== this.props.getData) {
+        this.update();
+      }
+    }
+
+    componentDidMount() {
+      this.update();
+    }
+
+    update() {
+      this.props
+        .getData()
+        .then(data => {
+          this.setState({
+            data,
+            loading: false
+          });
+        })
+        .catch(this.onError);
     }
 
     render() {

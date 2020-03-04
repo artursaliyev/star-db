@@ -1,12 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 
 import "./item-list.css";
-import Spinner from "../spinner";
-import api from "../../service";
-import { withData } from "../hoc-helpers";
 
 const ItemList = props => {
-  const { data, propsOnItemSelected, children: renderLabel } = props;
+  const { data, onItemSelected, children: renderLabel } = props;
 
   const renderItems = arr => {
     return arr.map(({ id, ...item }) => {
@@ -14,7 +11,7 @@ const ItemList = props => {
         <li
           className="list-group-item"
           key={id}
-          onClick={() => propsOnItemSelected(id)}
+          onClick={() => onItemSelected(id)}
         >
           {renderLabel(item)}
         </li>
@@ -27,4 +24,4 @@ const ItemList = props => {
   return <ul className="item-list list-group">{items}</ul>;
 };
 
-export default withData(ItemList, api.persons.all);
+export default ItemList;

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
-import api from "../../service";
+import { api } from "../../service";
 
 import "./random-planet.css";
 
@@ -19,7 +19,6 @@ export default class RandomPlanet extends Component {
   }
 
   componentWillUnmount() {
-    console.log("componentWillUnmount()");
     clearInterval(this.interval);
   }
 
@@ -40,7 +39,6 @@ export default class RandomPlanet extends Component {
   };
 
   render() {
-    console.log("reder(random-planet)");
     const { planet, loading, error } = this.state;
 
     const hasData = !(error || loading);
