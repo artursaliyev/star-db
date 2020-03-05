@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
@@ -14,8 +15,9 @@ export default class RandomPlanet extends Component {
   };
 
   componentDidMount() {
+    const { updateInterval } = this.props;
     this.updatePlanet();
-    this.interval = setInterval(this.updatePlanet, 190000);
+    this.interval = setInterval(this.updatePlanet, updateInterval);
   }
 
   componentWillUnmount() {
@@ -57,11 +59,19 @@ export default class RandomPlanet extends Component {
   }
 }
 
+RandomPlanet.defaultProps = {
+  updateInterval: 20000
+};
+
+RandomPlanet.propTypes = {
+  updateInterval: PropTypes.number
+};
+
 const PlanetView = ({ planet }) => {
   const { id, name, population, rotationPeriod, diameter } = planet;
 
   return (
-    <React.Fragment>
+    <>
       <img
         className="planet-image"
         src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`}
@@ -84,6 +94,6 @@ const PlanetView = ({ planet }) => {
           </li>
         </ul>
       </div>
-    </React.Fragment>
+    </>
   );
 };
